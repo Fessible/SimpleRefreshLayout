@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SimpleRefreshLayout.iml" filepath="$PROJECT_DIR$/SimpleRefreshLayout.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/SimpleRefreshLayout.iml" filepath="$PROJECT_DIR$/.idea/SimpleRefreshLayout.iml" />
+      <module fileurl="file://D:\download2\NewProject\SimpleRefreshLayout\SimpleRefreshLayout.iml" filepath="D:\download2\NewProject\SimpleRefreshLayout\SimpleRefreshLayout.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/simplerefresh/simplerefresh.iml" filepath="$PROJECT_DIR$/simplerefresh/simplerefresh.iml" />
     </modules>
   </component>
 </project>
