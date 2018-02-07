@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="pull_text_color">#707070</color>
+    <color name="loading_text_color">#515151</color>
+</resources>

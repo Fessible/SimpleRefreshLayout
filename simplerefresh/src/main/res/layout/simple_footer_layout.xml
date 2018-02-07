@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:padding="20dp">
+
+    <ImageView
+        android:id="@+id/pull_up_loading"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/ui_loading_animation"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_pull_up_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/pull_up_loading"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/pull_up_loading"
+        android:text="上拉加载更多"
+        android:textColor="@color/pull_text_color" />
+
+</RelativeLayout>

@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal|bottom"
+    android:padding="20dp">
 
-</android.support.constraint.ConstraintLayout>
+    <ImageView
+        android:id="@+id/pull_down_arrow"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/ui_indicate_arrow" />
+
+    <ImageView
+        android:id="@+id/pull_down_loading"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/ui_loading_animation"
+        android:visibility="gone" />
+    <TextView
+        android:id="@+id/tv_pull_down_des"
+        android:textColor="@color/pull_text_color"
+        android:layout_alignBottom="@id/pull_down_arrow"
+        android:layout_toRightOf="@id/pull_down_arrow"
+        android:layout_marginLeft="10dp"
+        android:text="下拉刷新"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+</RelativeLayout>
