@@ -2,6 +2,7 @@ package com.example.com.simplerefresh;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Handler;
 import android.support.annotation.IntDef;
@@ -59,12 +60,31 @@ public class SimpleRefreshLayout extends ViewGroup {
 
     public SimpleRefreshLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
+        //获取自定义属性
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SimpleRefreshLayout
+        );
+        pullUpEnable = typedArray.getBoolean(R.styleable.SimpleRefreshLayout_upEnable, true);
+        pullDownEnable = typedArray.getBoolean(R.styleable.SimpleRefreshLayout_downEnable, true);
+        typedArray.recycle();
+
 //        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
 //        mTouchSlop = (int) getResources().getDimension(R.dimen.touch_slop);
         mEffectiveScrollY = (int) getResources().getDimension(R.dimen.effect_scroll);
         mScroller = new Scroller(context);
         mContext = context;
     }
+
+
+    //动态设置下拉刷新是否可用
+    public void setPullDownEnable(boolean pullDownEnable) {
+        this.pullDownEnable = pullDownEnable;
+    }
+
+    //动态设置上拉加载是否可用
+    public void setPullUpEnable(boolean pullUpEnable) {
+        this.pullUpEnable = pullUpEnable;
+    }
+
 
     //设置刷新回调监听
     public void setOnRefresh(onRefreshListener onRefresh) {
@@ -135,7 +155,7 @@ public class SimpleRefreshLayout extends ViewGroup {
         if (mTarget == null) {
             return;
         }
-        //测量子类,设置为铺面全屏
+        //测量子类,设置为铺满全屏
         for (int i = 0; i < getChildCount(); i++) {
             getChildAt(i).measure(
                     MeasureSpec.makeMeasureSpec(
@@ -280,19 +300,25 @@ public class SimpleRefreshLayout extends ViewGroup {
                     isPullDown = true;
                     if (Math.abs(getScrollY()) <= mPullHeader.getMeasuredHeight() / 2) {
                         if (Math.abs(getScrollY()) >= mEffectiveScrollY) {
-                            deltaY /= SCROLL_RESISTANCE;
+                            deltaY /= SCROLL_RESISTANCE;//滑动阻力
                             updateState(PULL_DOWN_RELEASE);
                         } else {
                             updateState(PULL_DOWN_NORMAL);
                         }
                     }
                 } else { //底部向下滑动时
+                    if (!pullUpEnable) {
+                        return;
+                    }
                     if (Math.abs(getScrollY()) < mEffectiveScrollY) {
                         updateState(PULL_UP_NORMAL);
                     }
                 }
             } else {//上拉
                 if (getScrollY() < 0) {//顶部向上滑动
+                    if (!pullDownEnable) {
+                        return;
+                    }
                     if (Math.abs(getScrollY()) < mEffectiveScrollY) {
                         updateState(PULL_DOWN_NORMAL);
                     }
@@ -304,7 +330,7 @@ public class SimpleRefreshLayout extends ViewGroup {
                     if (Math.abs(getScrollY()) + Math.abs(deltaY) < mPullFooter.getMeasuredHeight() / 2) {
                         if (Math.abs(getScrollY()) >= mEffectiveScrollY) {
                             updateState(PULL_UP_RELEASE);
-                            deltaY /= SCROLL_RESISTANCE;
+                            deltaY /= SCROLL_RESISTANCE;//添加滑动阻力
                         } else {
                             updateState(PULL_UP_NORMAL);
                         }
@@ -385,21 +411,25 @@ public class SimpleRefreshLayout extends ViewGroup {
     }
 
     private void resetDown() {
-        mCurrentState = PULL_IDLE;
-        isRefreshing = false;
-        ivArrowPullDown.setVisibility(VISIBLE);
-        ivArrowPullDown.setRotation(0);
-        tvHintPullDown.setText("下拉刷新");
-        downProgressAnimation.stop();
-        ivProgressPullDown.setVisibility(GONE);
+        if (pullDownEnable) {
+            mCurrentState = PULL_IDLE;
+            isRefreshing = false;
+            ivArrowPullDown.setVisibility(VISIBLE);
+            ivArrowPullDown.setRotation(0);
+            tvHintPullDown.setText("下拉刷新");
+            downProgressAnimation.stop();
+            ivProgressPullDown.setVisibility(GONE);
+        }
     }
 
     private void resetUp() {
-        mCurrentState = PULL_IDLE;
-        isRefreshing = false;
-        tvHintPullUp.setText("上拉加载更多");
-        upProgressAnimation.stop();
-        ivProgressPullUp.setVisibility(GONE);
+        if (pullUpEnable) {
+            mCurrentState = PULL_IDLE;
+            isRefreshing = false;
+            tvHintPullUp.setText("上拉加载更多");
+            upProgressAnimation.stop();
+            ivProgressPullUp.setVisibility(GONE);
+        }
     }
 
     @Override
@@ -411,13 +441,13 @@ public class SimpleRefreshLayout extends ViewGroup {
         invalidate();
     }
 
-    static final int PULL_IDLE = -1;
-    static final int PULL_DOWN_NORMAL = 0;
-    static final int PULL_DOWN_RELEASE = 1;
-    static final int PULL_DOWN_REFRESH = 2;
-    static final int PULL_UP_NORMAL = 3;
-    static final int PULL_UP_RELEASE = 4;
-    static final int PULL_UP_REFRESH = 5;
+    static final int PULL_IDLE = -1;//无状态
+    static final int PULL_DOWN_NORMAL = 0;//下拉刷新
+    static final int PULL_DOWN_RELEASE = 1;//释放刷新
+    static final int PULL_DOWN_REFRESH = 2;//正在刷新
+    static final int PULL_UP_NORMAL = 3;//上拉加载更多
+    static final int PULL_UP_RELEASE = 4;//上拉释放
+    static final int PULL_UP_REFRESH = 5;//正在加载
 
     @IntDef({
             PULL_IDLE,

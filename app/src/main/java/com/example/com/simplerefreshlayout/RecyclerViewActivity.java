@@ -40,12 +40,14 @@ public class RecyclerViewActivity extends AppCompatActivity {
         simpleRefreshLayout.setOnRefresh(new SimpleRefreshLayout.onRefreshListener() {
             @Override
             public void onUpRefresh() {
+                data.add("新增内容");
+                adapter.notifyDataSetChanged();
                 simpleRefreshLayout.stopRefresh();
             }
 
             @Override
             public void onDownRefresh() {
-                simpleRefreshLayout.stopRefresh();
+//                simpleRefreshLayout.stopRefresh();
             }
         });
     }

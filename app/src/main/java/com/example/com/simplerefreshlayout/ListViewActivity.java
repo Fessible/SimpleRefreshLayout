@@ -38,10 +38,13 @@ public class ListViewActivity extends AppCompatActivity {
             @Override
             public void onUpRefresh() {
                 simpleRefreshLayout.stopRefresh();
+                data.add("新增内容");
+                arrayAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onDownRefresh() {
+
                 simpleRefreshLayout.stopRefresh();
             }
         });
